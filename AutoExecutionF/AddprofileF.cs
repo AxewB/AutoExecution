@@ -13,11 +13,27 @@ namespace AutoExecutionF
     public partial class AddprofileF : Form
     {
         Form1 form;
+        bool edit = false;
         public AddprofileF(Form1 form)
         {
             InitializeComponent();
             this.form = form;
+            profile = new Profile();
+            apps = new List<App>();
         }
+        
+        
+        public AddprofileF(Form1 form, Profile p)
+        {
+            InitializeComponent();
+            this.form = form;
+            profile = p;
+            apps = profile.getapplist();
+            edit = true;
+            profilename_textbox.Text = profile.getname();
+
+        }
+
         private void AddprofileF_Load(object sender, EventArgs e)
         {
             int width = apps_listView.Width / 3;
@@ -25,13 +41,12 @@ namespace AutoExecutionF
             apps_listView.Columns.Add("name", width);
             apps_listView.Columns.Add("path", width);
             apps_listView.Columns.Add("args", width);
+            UpdateList();
 
-            //errmsg_label.Hide();
-            //errmsg_label.Click += (sender, e) => { errmsg_label.Enabled = false; };
             errmsg_label.Visible = false;
         }
-        Profile profile = new Profile();
-        List<App> apps = new List<App>();       
+        Profile profile;
+        List<App> apps;       
         private void addapp_button_Click(object sender, EventArgs e)
         {
             App app = new App();            
@@ -145,7 +160,11 @@ namespace AutoExecutionF
             else errmsg_label.Hide();
             profile.setname(name);
             profile.addapps(apps);
-            profiles.addprofile(profile);
+            if (!edit)
+            {
+                profiles.addprofile(profile);
+            }
+            
 
             profiles.SaveData();
             form.UpdateProfileList();

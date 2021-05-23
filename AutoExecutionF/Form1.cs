@@ -142,15 +142,14 @@ namespace AutoExecutionF
 
         private void editprofile_button_Click(object sender, EventArgs e)
         {
-            AddprofileF addprofileF = new AddprofileF(this);
-            addprofileF.Show();
-
             Profiles profiles = Profiles.get();
             List<Profile> profilelist = profiles.getprofilelist();
             string tempname = "";
-            tempname = combobox_profiles.GetItemText(this.combobox_profiles.SelectedItem);
-
+            tempname = combobox_profiles.GetItemText(this.combobox_profiles.SelectedItem);                   
             Profile profile = SearchProfile(tempname);
+
+            AddprofileF addprofileF = new AddprofileF(this, profile);
+            addprofileF.Show();
         }
     }
 }
